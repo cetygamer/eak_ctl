@@ -1,0 +1,315 @@
+name: Video doorbell
+products:
+  - id: pdctg2ey2qkwimni
+    manufacturer: Tantos
+    model: NEO HD SE Tuya
+    model_id: e8h904
+entities:
+  # {"abilityId": 110, "accessMode": "ro", "code": "sd_status", "description": "status：sd卡状态，1-正常，2-异常，3-空间不足，4-正在格式化，5-无SD卡；", "extensions": {"iconName": "icon-setting", "scope": "", "attribute": "1024"}, "name": "存储卡状态", "typeSpec": {"type": "value", "max": 5, "min": 1, "scale": 0, "step": 1, "unit": ""}}
+  - entity: sensor
+    name: SD status
+    translation_key: status
+    class: enum
+    category: diagnostic
+    dps:
+      - id: 110
+        type: integer
+        name: sensor
+        mapping:
+          - dps_val: 1
+            value: normal
+          - dps_val: 2
+            value: fault
+          - dps_val: 3
+            value: full
+          - dps_val: 4
+            value: formatting
+          - dps_val: 5
+            value: missing
+          - dps_val: null
+            value: normal
+  # {"abilityId": 136, "accessMode": "ro", "code": "doorbell_active", "description": "此功能已弃用，请使用SDK 43门铃呼叫协议", "extensions": {"iconName": "icon-setting", "scope": "", "attribute": "1024"}, "name": "门铃-呼叫", "typeSpec": {"type": "string", "maxlen": 255}}
+  - entity: event
+    class: doorbell
+    hidden: true
+    dps:
+      - id: 136
+        type: string
+        name: event
+        optional: true
+        mapping:
+          - dps_val: null
+            value: null
+          - dps_val: ""
+            value: null
+          - value: ring
+      - id: 136
+        type: string
+        optional: true
+        name: message
+  # {"abilityId": 148, "accessMode": "rw", "code": "accessory_lock", "description": "", "extensions": {"iconName": "icon-setting", "scope": "", "attribute": "1024"}, "name": "锁-开关", "typeSpec": {"type": "bool"}}
+  - entity: lock
+    name: Accessory
+    hidden: true
+    dps:
+      - id: 148
+        type: boolean
+        optional: true
+        name: lock
+        mapping:
+          - dps_val: true
+            value: false
+          - dps_val: false
+            value: true
+  # {"abilityId": 153, "accessMode": "rw", "code": "wireless_batterylock", "description": "true上锁，false解锁", "extensions": {"iconName": "icon-setting", "scope": "", "attribute": "1024"}, "name": "GATE锁开关", "typeSpec": {"type": "bool"}}
+  - entity: lock
+    name: Battery
+    hidden: true
+    dps:
+      - id: 153
+        type: boolean
+        name: lock
+  # {"abilityId": 154, "accessMode": "ro", "code": "doorbell_pic", "description": "用户按下门铃，抓拍图片并上传", "extensions": {"iconName": "icon-setting", "scope": "", "attribute": "1024"}, "name": "门铃抓拍图片", "typeSpec": {"type": "raw", "maxlen": 128}}
+  - entity: event
+    class: doorbell
+    name: Door image
+    hidden: true
+    dps:
+      - id: 154
+        type: base64
+        name: event
+        optional: true
+        mapping:
+          - dps_val: null
+            value: null
+          - value: ring
+      - id: 154
+        type: base64
+        optional: true
+        name: snapshot
+  # {"abilityId": 185, "accessMode": "ro", "code": "alarm_message", "description": "实现方式参考嵌入式SDK使用文档", "extensions": {"iconName": "icon-setting", "attribute": "1024"}, "name": "告警消息上报", "typeSpec": {"type": "raw", "maxlen": 128}}
+  - entity: event
+    translation_key: alarm
+    hidden: true
+    dps:
+      - id: 185
+        type: base64
+        name: event
+        optional: true
+        mapping:
+          - dps_val: null
+            value: null
+          - value: triggered
+      - id: 185
+        type: base64
+        optional: true
+        name: message
+  # {"abilityId": 212, "accessMode": "rw", "code": "initiative_message", "description": "参考SDK文档实现", "extensions": {"attribute": "2048"}, "name": "主动消息推送", "typeSpec": {"type": "raw", "maxlen": 128}}
+  - entity: event
+    name: Notification
+    dps:
+      - id: 212
+        type: base64
+        name: event
+        optional: true
+        mapping:
+          - dps_val: null
+            value: null
+          - value: message
+      - id: 212
+        type: base64
+        optional: true
+        name: message
+  # {"abilityId": 232, "accessMode": "rw", "code": "ipc_c_lock2", "description": "0-关闭\\n1-打开\\n2-无锁-图标灰掉", "extensions": {"scope": ""}, "name": "锁-开关2", "typeSpec": {"type": "enum", "range": ["0", "1", "2"]}}
+  - entity: lock
+    name: Lock 1
+    hidden: unavailable
+    dps:
+      - id: 232
+        type: string
+        name: lock
+        mapping:
+          - dps_val: "0"
+            value: true
+          - dps_val: "1"
+            value: false
+          - dps_val: "2"
+            value: true
+            hidden: true
+      - id: 232
+        type: string
+        name: available
+        mapping:
+          - dps_val: "2"
+            value: false
+          - value: true
+  # {"abilityId": 233, "accessMode": "rw", "code": "ipc_c_switch_channel", "description": "", "extensions": {"scope": ""}, "name": "切换通道", "typeSpec": {"type": "string", "maxlen": 255}}
+  - entity: text
+    name: Channel switching
+    category: config
+    hidden: true
+    dps:
+      - id: 233
+        type: json
+        name: value
+  # {"abilityId": 234, "accessMode": "rw", "code": "ipc_c_channel1", "description": "", "name": "通道1", "typeSpec": {"type": "string", "maxlen": 255}}
+  - entity: text
+    name: Channel 1
+    hidden: true
+    dps:
+      - id: 234
+        type: string
+        name: value
+  # {"abilityId": 235, "accessMode": "rw", "code": "ipc_c_channel2", "description": "", "name": "通道2", "typeSpec": {"type": "string", "maxlen": 255}}
+  - entity: text
+    name: Channel 2
+    hidden: true
+    dps:
+      - id: 235
+        type: string
+        name: value
+  # {"abilityId": 236, "accessMode": "rw", "code": "ipc_c_channel3", "description": "", "name": "通道3", "typeSpec": {"type": "string", "maxlen": 255}}
+  - entity: text
+    name: Channel 3
+    hidden: true
+    dps:
+      - id: 236
+        type: string
+        name: value
+  # {"abilityId": 237, "accessMode": "rw", "code": "ipc_c_channel4", "description": "", "name": "通道4", "typeSpec": {"type": "string", "maxlen": 255}}
+  - entity: text
+    name: Channel 4
+    hidden: true
+    dps:
+      - id: 237
+        type: string
+        name: value
+  # {"abilityId": 240, "accessMode": "ro", "code": "ipc_hangup", "description": "上报ture后，面板弹出管段弹窗，确认后返回到设备列表", "extensions": {"scope": ""}, "name": "视频挂断", "typeSpec": {"type": "bool"}}
+  - entity: event
+    name: Hang up
+    hidden: true
+    dps:
+      - id: 240
+        type: boolean
+        name: event
+        mapping:
+          - dps_val: true
+            value: ring
+          - value: null
+  # {"abilityId": 241, "accessMode": "ro", "code": "ipc_ch1", "description": "", "name": "自定义告警-CH1", "typeSpec": {"type": "bool"}}
+  - entity: event
+    name: Channel 1 Doorbell
+    class: doorbell
+    dps:
+      - id: 241
+        type: boolean
+        name: event
+        mapping:
+          - dps_val: true
+            value: ring
+          - value: null
+  # {"abilityId": 242, "accessMode": "ro", "code": "ipc_ch2", "description": "", "name": "自定义告警-CH2", "typeSpec": {"type": "bool"}}
+  - entity: event
+    name: Channel 2 Doorbell
+    class: doorbell
+    dps:
+      - id: 242
+        type: boolean
+        name: event
+        mapping:
+          - dps_val: true
+            value: ring
+          - value: null
+  # {"abilityId": 243, "accessMode": "ro", "code": "ipc_ch3", "description": "", "name": "自定义告警-CH3", "typeSpec": {"type": "bool"}}
+  - entity: event
+    name: Channel 3 Doorbell
+    class: doorbell
+    hidden: true
+    dps:
+      - id: 243
+        type: boolean
+        name: event
+        mapping:
+          - dps_val: true
+            value: ring
+          - value: null
+  # {"abilityId": 244, "accessMode": "ro", "code": "ipc_ch4", "description": "", "name": "自定义告警-CH4", "typeSpec": {"type": "bool"}}
+  - entity: event
+    name: Channel 4 Doorbell
+    class: doorbell
+    hidden: true
+    dps:
+      - id: 244
+        type: boolean
+        name: event
+        mapping:
+          - dps_val: true
+            value: ring
+          - value: null
+  # {"abilityId": 245, "accessMode": "rw", "code": "ipc_talk_set", "description": "ture-禁止对讲\\nfalse-监听状态", "name": "对讲状态设置", "typeSpec": {"type": "bool"}}
+  - entity: event
+    name: Talk disable
+    hidden: true
+    dps:
+      - id: 245
+        type: boolean
+        name: event
+        mapping:
+          - dps_val: true
+            value: disabled
+          - value: null
+  # {"abilityId": 246, "accessMode": "rw", "code": "ipc_c_lock1", "description": "0-关闭\\n1-打开\\n2-无锁-图标灰掉", "extensions": {"scope": ""}, "name": "锁-开关1", "typeSpec": {"type": "enum", "range": ["0", "1", "2"]}}
+  - entity: lock
+    name: Lock 2
+    hidden: unavailable
+    dps:
+      - id: 246
+        type: string
+        name: lock
+        mapping:
+          - dps_val: "0"
+            value: true
+          - dps_val: "1"
+            value: false
+          - dps_val: "2"
+            value: true
+            hidden: true
+      - id: 246
+        type: string
+        name: available
+        mapping:
+          - dps_val: "2"
+            value: false
+          - value: true
+  # {"abilityId": 248, "accessMode": "rw", "code": "ipc_device", "description": "数量不为0时，面板弹窗提示", "extensions": {"scope": ""}, "name": "当前连接设备数", "typeSpec": {"type": "value", "max": 5, "min": 0, "scale": 0, "step": 1, "unit": ""}}
+  - entity: sensor
+    name: Connected devices
+    hidden: true
+    dps:
+      - id: 248
+        type: integer
+        name: value
+  # {"abilityId": 251, "accessMode": "ro", "code": "ipc_c_password", "description": "1:显示二维码开锁的设置界面 0:图标隐藏", "extensions": {"scope": ""}, "name": "二维码菜单开关", "typeSpec": {"type": "enum", "range": ["0", "1"]}}
+  - entity: binary_sensor
+    name: QR code unlock menu
+    hidden: true
+    dps:
+      - id: 251
+        type: string
+        name: sensor
+        optional: true
+        mapping:
+          - dps_val: "1"
+            value: true
+          - dps_val: "0"
+            value: false
+  # {"abilityId": 252, "accessMode": "rw", "code": "ipc_c_sendpw", "description": "\\t//107e70103134007e701031440\\n\\t//大门临时密码（2023.01.03 13:40 ～ 2023.01.03 14:40）\\n", "extensions": {"scope": ""}, "name": "二维码相关数据", "typeSpec": {"type": "string", "maxlen": 255}}
+  - entity: text
+    name: QR code password
+    hidden: true
+    dps:
+      - id: 252
+        type: string
+        name: value
+        optional: true
+        sensitive: true

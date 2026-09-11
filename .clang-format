@@ -1,0 +1,38 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments:
+  Enabled:          true
+  AcrossComments:   true
+  AlignCompound:    true
+  PadOperators:     true
+AlignConsecutiveBitFields:
+  Enabled:          true
+  AcrossComments:   true
+  AcrossEmptyLines: true
+AlignConsecutiveDeclarations:
+  Enabled:          true
+  AcrossComments:   true
+AlignConsecutiveMacros:
+  Enabled:          true
+  AcrossComments:   true
+  AcrossEmptyLines: true
+AlignConsecutiveShortCaseStatements:
+  Enabled:          true
+  AcrossComments:   true
+  AcrossEmptyLines: true
+AlignEscapedNewlines: Left
+ColumnLimit: 120
+ContinuationIndentWidth: 8
+Cpp11BracedListStyle: false
+IndentCaseLabels: true
+IndentWidth: 4
+QualifierAlignment: Custom
+QualifierOrder: ['static', 'inline', 'const', 'volatile', 'type', 'restrict']
+SpaceAfterCStyleCast: true
+SpaceAroundPointerQualifiers: Before
+SeparateDefinitionBlocks: Always
+EmptyLineBeforeAccessModifier: LogicalBlock
+MaxEmptyLinesToKeep: 1
+...
