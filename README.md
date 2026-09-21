@@ -12,7 +12,10 @@ Home Assistant MQTT entities:
 
 # Modified application
 
-`eakui.EApp` - modified binary file V10944 with bug fixes:
+`eakui.EApp.V10944.patched` - modified binary file V10944 with bug fixes.
+`eakui.EApp.V10945.patched` - modified binary file V10945 with bug fixes.
+
+Bug fixes:
 
  - Send Tuya DP based on panel ID (was hardcoded to 0).
 
